@@ -19,7 +19,7 @@ sub new {
   } elsif ( $arg{type} eq 'sql' ) {
     return Teamspeak::SQL->new(%arg);
   } else {
-    die("unknown type");
+    die("unknown type $arg{type}");
   }
 }    # new
 

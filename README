@@ -10,7 +10,6 @@ NAME
 
 DESCRIPTION
 
-
     See the file "Teamspeak.pod" for excruciating detail on all of this.
 
 
@@ -18,12 +17,16 @@ LIMITATIONS
 
     * The Telnet-Connection is not secure.
 
-    * The MySQL-Interface is not used.
+    * The MySQL-Interface has no functions at the Moment.
 
 
 PREREQUISITES
 
-    Teamspeak requires Net::Telnet to use the Telnet-Interface.
+    In order to use Teamspeak, you need at least one of the
+    following Modules:
+      a) Net::Telnet to use the Telnet-Interface.
+      b) DBD::mysql to use the MySQL-Interface.
+      c) DBD::SQLite to use the SQLite-Interface.
 
 
 INSTALLATION
@@ -34,10 +37,8 @@ INSTALLATION
 
 CHANGES AND FUTURE DEVELOPMENT
 
-    This readme refers to versions 0.XX.
+    This readme refers to versions 0.1.
     For details of changes, refer to the file Changes.
-
-    Version 1.0 will provide helpful methods.
 
 
 AUTHOR
