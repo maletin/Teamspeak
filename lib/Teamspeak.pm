@@ -8,19 +8,19 @@ use strict;
 use Net::Telnet;
 use Carp;
 use vars qw( $VERSION );
-use Teamspeak::Telnet;
-use Teamspeak::SQL;
-use Teamspeak::Web;
 
 $VERSION = '0.2';
 
 sub new {
   my ( $class, %arg ) = @_;
   if ( $arg{type} eq 'telnet' ) {
+    require Teamspeak::Telnet;
     return Teamspeak::Telnet->new(%arg);
   } elsif ( $arg{type} eq 'sql' ) {
+    require Teamspeak::SQL;
     return Teamspeak::SQL->new(%arg);
   } elsif ( $arg{type} eq 'web' ) {
+    require Teamspeak::Web;
     return Teamspeak::Web->new(%arg);
   } else {
     die("unknown type $arg{type}");

@@ -1,5 +1,5 @@
 ==============================================================================
-                 Release of version 0.1 of Teamspeak
+                 Release of version 0.2 of Teamspeak
 ==============================================================================
 
 
@@ -24,9 +24,10 @@ PREREQUISITES
 
     In order to use Teamspeak, you need at least one of the
     following Modules:
-      a) Net::Telnet to use the Telnet-Interface.
-      b) DBD::mysql to use the MySQL-Interface.
-      c) DBD::SQLite to use the SQLite-Interface.
+      1) Net::Telnet to use the Telnet-Interface.
+      2) DBD::mysql to use the MySQL-Interface.
+      3) DBD::SQLite to use the SQLite-Interface.
+      4) WWW::Mechanize to use the HTTP-Interface.
 
 
 INSTALLATION
