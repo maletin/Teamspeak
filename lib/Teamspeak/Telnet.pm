@@ -7,7 +7,7 @@ use 5.004;
 use strict;
 use Carp;
 use vars qw( $VERSION );
-$VERSION = '0.1';
+$VERSION = '0.2';
 my @ISA = qw( Teamspeak );
 
 ## Module import.

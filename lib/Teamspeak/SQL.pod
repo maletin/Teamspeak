@@ -163,14 +163,16 @@ for TS-Server of Version 2.0.20.1
   s_setting_ident varchar(40)
   s_setting_value varchar(40)
 
-=head2 ts2_clients
+=head1 AVAILABILITY
 
-  i_client_id integer primary key
-  i_client_server_id integer
-  b_client_privilege_serveradmin integer
-  s_client_name varchar(40)
-  s_client_password varchar(80)
-  dt_client_created varchar(20)
-  dt_client_lastonline varchar(20)
+=over 0
+
+=item Teamspeak::SQL has been uploaded to the CPAN.
+
+=item $Id$
+
+=item $URL$
+
+=back
 
 =cut

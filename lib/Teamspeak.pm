@@ -10,7 +10,7 @@ use vars qw( $VERSION );
 use Teamspeak::Telnet;
 use Teamspeak::SQL;
 
-$VERSION = '0.1';
+$VERSION = '0.2';
 
 sub new {
   my ( $class, %arg ) = @_;
