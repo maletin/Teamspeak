@@ -7,7 +7,6 @@ use 5.004;
 use strict;
 use Carp;
 use DBI;
-use DBD::SQLite;
 use vars qw( $VERSION );
 $VERSION = '0.1';
 my @ISA = qw( Teamspeak );
