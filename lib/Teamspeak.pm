@@ -27,6 +27,12 @@ sub new {
   }
 }    # new
 
+sub error {
+  $_[0]->{err} = 1;
+  $_[0]->{errstr} = $_[1];
+  return 0;
+}    # error
+
 sub my_die {
   croak "my_die";
 }    # my_die

@@ -10,15 +10,27 @@ use WWW::Mechanize;
 use vars qw( $VERSION );
 $VERSION = '0.2';
 
+sub slogin {
+  my ( $self, $login, $password ) = @_;
+  my $mech = $self->{mech};
+  $mech->follow_link;
+  $mech->submit_form( fields => { username => $login, password => $password } ) or return $self->error( 'slogin' );
+  $self->{slogin} = $login;
+  $self->{err} = undef;
+  $self->{errstr} = undef;
+  return 1;
+} # slogin
+
 sub connect {
   my ( $self, %arg ) = @_;
   my $url = "http://$self->{w_host}:$self->{w_port}/";
   my $mech = WWW::Mechanize->new;
-  $mech->get( $url );
+  $mech->get( $url ) or return $self->error( 'connect' );
   $self->{mech} = $mech;
   $self->{connect} = 1;
-  $self->{slogin} = '';
-  $self->{login} = '';
+  $self->login( $arg{login}, $arg{pwd} ) if( $arg{login} );
+  $self->slogin( $arg{slogin}, $arg{pwd} ) if( $arg{slogin} );
+  return 1; # Success
 }    # connect
 
 sub new {
@@ -30,15 +42,5 @@ sub new {
   };
   bless $s, ref($class) || $class;
 }    # new
-
-sub sl {
-  my $self = shift;
-  my $s    = 'select * from ts2_servers';
-  return $self->{db}->selectall_hashref( $s, 'i_server_id' );
-}    # sl
-
-sub my_die {
-  croak "my_die";
-}    # my_die
 
 1;

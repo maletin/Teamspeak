@@ -62,18 +62,23 @@ package channel;
 my @_parameter = ( 's_channel_description', 'dt_channel_created',
     's_channel_name', 'i_channel_parent_id', 'i_channel_codec',
     'b_channel_flag_hierarchical', 's_channel_topic', 'i_channel_order',
-    'i_channel_id', 's_channel_password', 'b_channel_flag_moderated',
+    's_channel_password', 'b_channel_flag_moderated',
     'b_channel_flag_default', 'i_channel_maxusers', 'i_channel_server_id' );
 
 sub store {
   my $self = shift;
-  my @param = grep( !/i_channel_id/, @_parameter );
   my $sql = "update ts2_channels set "
-    . join( ', ', map { "$_ = ?" } @param )
+    . join( ', ', map { "$_ = ?" } @_parameter )
     . " where i_channel_id = ?";
-  my @bind_values =   my $rows_affected = $self->{dbh}->do( $sql, {},
-      map( { $self->{$_} } @param ), $self->{i_channel_id} );
-  &Teamspeak::my_die() if $rows_affected != 1;
+  my $rows_affected = $self->{dbh}->do( $sql, {},
+      map( { $self->{$_} } @_parameter ), $self->{i_channel_id} );
+  if( $rows_affected == 1 or $rows_affected == 0 ) {
+    return 1; # Even unmodified Channels report sucess.
+  } else {
+    $self->{err} = 1;
+    $self->{errstr} = "$rows_affected Channels modified.";
+    return 0; # should never happen, because i_channel_id is primary key.
+  }
 }    # channel::store
 
 sub parameter {
