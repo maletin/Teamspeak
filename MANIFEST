@@ -1,4 +1,3 @@
-Build.PL
 Changes
 lib/Teamspeak.pm
 lib/Teamspeak/SQL.pm
