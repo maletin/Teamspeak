@@ -5,7 +5,6 @@ package Teamspeak::SQL;
 
 use 5.004;
 use strict;
-use Carp;
 use DBI;
 use vars qw( $VERSION );
 $VERSION = '0.2';
@@ -40,14 +39,46 @@ sub new {
   bless $s, ref($class) || $class;
 }    # new
 
+sub get_channel {
+  my $self = shift;
+  my $s    = 'select * from ts2_channels';
+  my $all = $self->{db}->selectall_hashref( $s, 'i_channel_id' );
+  my @result;
+  foreach my $c ( keys %$all ) {
+    $all->{$c}{dbh} = $self->{db}; # Database Handle for Updates.
+    push @result, bless( $all->{$c}, 'channel' );
+  }
+  return \@result;
+}    # get_channel
+
 sub sl {
   my $self = shift;
   my $s    = 'select * from ts2_servers';
   return $self->{db}->selectall_hashref( $s, 'i_server_id' );
 }    # sl
 
-sub my_die {
-  croak "my_die";
-}    # my_die
+package channel;
+
+my @_parameter = ( 's_channel_description', 'dt_channel_created',
+    's_channel_name', 'i_channel_parent_id', 'i_channel_codec',
+    'b_channel_flag_hierarchical', 's_channel_topic', 'i_channel_order',
+    'i_channel_id', 's_channel_password', 'b_channel_flag_moderated',
+    'b_channel_flag_default', 'i_channel_maxusers', 'i_channel_server_id' );
+
+sub store {
+  my $self = shift;
+  my @param = grep( !/i_channel_id/, @_parameter );
+  my $sql = "update ts2_channels set "
+    . join( ', ', map { "$_ = ?" } @param )
+    . " where i_channel_id = ?";
+  my @bind_values =   my $rows_affected = $self->{dbh}->do( $sql, {},
+      map( { $self->{$_} } @param ), $self->{i_channel_id} );
+  &Teamspeak::my_die() if $rows_affected != 1;
+}    # channel::store
+
+sub parameter {
+  my $self = shift;
+  return map { $_ =~ m/.+_channel_(.*)/; $1 } @_parameter;
+}    # channel::parameter
 
 1;

@@ -6,9 +6,11 @@ package Teamspeak;
 use 5.004;
 use strict;
 use Net::Telnet;
+use Carp;
 use vars qw( $VERSION );
 use Teamspeak::Telnet;
 use Teamspeak::SQL;
+use Teamspeak::Web;
 
 $VERSION = '0.2';
 
@@ -18,10 +20,16 @@ sub new {
     return Teamspeak::Telnet->new(%arg);
   } elsif ( $arg{type} eq 'sql' ) {
     return Teamspeak::SQL->new(%arg);
+  } elsif ( $arg{type} eq 'web' ) {
+    return Teamspeak::Web->new(%arg);
   } else {
     die("unknown type $arg{type}");
   }
 }    # new
+
+sub my_die {
+  croak "my_die";
+}    # my_die
 
 1;
 
