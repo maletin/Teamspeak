@@ -3,7 +3,7 @@
 
 package Teamspeak;
 
-require 5.005;
+require 5.004;
 use strict;
 use Net::Telnet;
 use vars qw( $VERSION );
@@ -45,14 +45,14 @@ Teamspeak - Interface to administrate Teamspeak-Server.
 You can connect to a Teamspeak-Server in four different ways:
   1. Telnet
   2. MySQL or MySQL::Lite
-  4. Web-Frontend
-  5. Teamspeak-Client is using UDP
+  3. Web-Frontend
+  4. Teamspeak-Client is using UDP
 
 Every Method can only administrate a part of all Methods together.
 
 =head1 DIAGNOSTICS
 
-The Project is in the Beginning.
+The Project is still Pre-Alpha.
 
 =head1 AUTHOR
 
@@ -68,6 +68,6 @@ Bug reports and other feedback are most welcome.
 
 =head1 COPYRIGHT
 
-Copyright (c) 1997-2001, Damian Conway. All Rights Reserved.
+Copyright (c) 2005-2005, Martin von Oertzen. All Rights Reserved.
 This module is free software. It may be used, redistributed
 and/or modified under the same terms as Perl itself.
