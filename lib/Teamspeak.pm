@@ -3,11 +3,12 @@
 
 package Teamspeak;
 
-require 5.004;
+use 5.004;
 use strict;
 use Net::Telnet;
 use vars qw( $VERSION );
 use Teamspeak::Telnet;
+use Teamspeak::SQL;
 
 $VERSION = '0.1';
 
@@ -16,6 +17,8 @@ sub new {
   my($class, %arg) = @_;
   if( $arg{type} eq 'telnet' ) {
     return Teamspeak::Telnet->new( %arg );
+  } elsif( $arg{type} eq 'sql' ) {
+    return Teamspeak::SQL->new( %arg );
   } else {
     die( "unknown type" );
   }

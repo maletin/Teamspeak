@@ -3,7 +3,7 @@
 
 package Teamspeak::Telnet;
 
-require 5.004;
+use 5.004;
 use strict;
 use Carp;
 use vars qw( $VERSION );
