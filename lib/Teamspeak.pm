@@ -1,0 +1,73 @@
+# $Id$
+# $URL$
+
+package Teamspeak;
+
+require 5.005;
+use strict;
+use Net::Telnet;
+use vars qw( $VERSION );
+use Teamspeak::Telnet;
+
+$VERSION = '0.1';
+
+
+sub new {
+  my($class, %arg) = @_;
+  if( $arg{type} eq 'telnet' ) {
+    return Teamspeak::Telnet->new( %arg );
+  } else {
+    die( "unknown type" );
+  }
+} # new
+
+
+1;
+
+
+__END__
+
+=head1 NAME
+
+Teamspeak - Interface to administrate Teamspeak-Server.
+
+=head1 SYNOPSIS
+
+ use Teamspeak;
+ my $t = Teamspeak->new( 
+     timeout => <sec>,
+     port => <port_number>,
+     host => <ip_or_hostname>
+   );
+ 
+=head1 DESCRIPTION
+
+You can connect to a Teamspeak-Server in four different ways:
+  1. Telnet
+  2. MySQL or MySQL::Lite
+  4. Web-Frontend
+  5. Teamspeak-Client is using UDP
+
+Every Method can only administrate a part of all Methods together.
+
+=head1 DIAGNOSTICS
+
+The Project is in the Beginning.
+
+=head1 AUTHOR
+
+Martin von Oertzen (maletin@cpan.org)
+
+=head1 BUGS AND IRRITATIONS
+
+There are undoubtedly serious bugs lurking somewhere in this code, if
+only because parts of it give the impression of understanding a great deal
+more about Perl than they really do. 
+
+Bug reports and other feedback are most welcome.
+
+=head1 COPYRIGHT
+
+Copyright (c) 1997-2001, Damian Conway. All Rights Reserved.
+This module is free software. It may be used, redistributed
+and/or modified under the same terms as Perl itself.
