@@ -31,6 +31,10 @@ __END__
 
 Teamspeak - Interface to administrate Teamspeak-Server.
 
+=head1 VERSION
+
+This document refers to version 0.2 of Teamspeak.
+
 =head1 SYNOPSIS
 
  use Teamspeak;
@@ -50,21 +54,47 @@ You can connect to a Teamspeak-Server in four different ways:
 
 Every Method can only administrate a part of all Methods together.
 
+=head2 Overview
+
+=head2 Constructor and initialization
+
+=head2 Class and object methods
+
+=head1 ENVIRONMENT
+
+There are no Environment-Variables used, at the moment.
+
 =head1 DIAGNOSTICS
 
 The Project is still Pre-Alpha.
 
-=head1 AUTHOR
+=over 4
 
-Martin von Oertzen (maletin@cpan.org)
+=item Can't locate Teamspeak.pm in @INC
 
-=head1 BUGS AND IRRITATIONS
+=back
+
+=head1 BUGS
 
 There are undoubtedly serious bugs lurking somewhere in this code, if
 only because parts of it give the impression of understanding a great deal
 more about Perl than they really do. 
 
-Bug reports and other feedback are most welcome.
+Bug reports and other feedback are most welcome at
+http://rt.cpan.org/NoAuth/Dists.html?Queue=Teamspeak
+
+=head1 FILES
+
+=head1 SEE ALSO
+
+Teamspeak::Core    Data-Structures for all Interfaces.
+Teamspeak::Telnet  The Telnet-Interface.
+Teamspeak::SQL     The SQL-Interface.
+Teamspeak::Web     The Web-Interface.
+
+=head1 AUTHOR
+
+Martin von Oertzen (maletin@cpan.org)
 
 =head1 COPYRIGHT
 
