@@ -12,21 +12,18 @@ use Teamspeak::SQL;
 
 $VERSION = '0.1';
 
-
 sub new {
-  my($class, %arg) = @_;
-  if( $arg{type} eq 'telnet' ) {
-    return Teamspeak::Telnet->new( %arg );
-  } elsif( $arg{type} eq 'sql' ) {
-    return Teamspeak::SQL->new( %arg );
+  my ( $class, %arg ) = @_;
+  if ( $arg{type} eq 'telnet' ) {
+    return Teamspeak::Telnet->new(%arg);
+  } elsif ( $arg{type} eq 'sql' ) {
+    return Teamspeak::SQL->new(%arg);
   } else {
-    die( "unknown type" );
+    die("unknown type");
   }
-} # new
-
+}    # new
 
 1;
-
 
 __END__
 
