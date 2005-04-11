@@ -75,29 +75,49 @@ sub login {
   return 1;
 }    # login
 
-# DataBase USERLIST:
+# Database userlist:
 sub dbuserlist {
   my $self   = shift;
   my @result = ();
   my_die("command needs login") if !logged_in();
   $self->{sock}->print('dbuserlist');
   my @answer = $self->{sock}->waitfor('/OK$/');
-  foreach my $line (@answer) {
-    my @r = split( /\t/, $line );
-    push( @result, [@r] );
+  pop @answer;  # Last Line contains OK
+  my @lines = split( /\cJ/, "@answer" );
+  shift @lines; # First Line is empty
+  my $fields = shift @lines;
+  my @fields = split( /\cI/, $fields );
+  foreach my $line (@lines) {
+    my @r = split( /\cI/, $line );
+    my %args = map {
+      $r[$_] =~ s/^"(.*)"$/$1/;
+      $r[$_] =~ s/^(\d\d)-(\d\d)-(\d{4})/$3-$2-$1/;
+      $fields[$_] => $r[$_] } 0..@r-1;
+    push( @result, { %args } );
   }
   return @result;
 }    # dbuserlist
 
-# DataBase USERDELete:
-sub dbuserdel {
+# Database userdelete:
+sub delete_user {
   my ( $self, $user_id ) = @_;
   $self->{sock}->print("dbuserdel $user_id");
   my @answer = $self->{sock}->waitfor('/OK$/');
   $self->{err}    = 0;
   $self->{errmsg} = undef;
   return 1;
-}    # dbuserdel
+}    # delete_user
+
+# Database useradd:
+sub add_user {
+  my ( $self, %args ) = @_;
+  $args{admin} = 0 if $args{admin} != 1;
+  $self->{sock}->print("dbuseradd $args{user} $args{pwd} $args{pwd} $args{admin}");
+  my @answer = $self->{sock}->waitfor('/OK$/');
+  $self->{err}    = 0;
+  $self->{errmsg} = undef;
+  return 1;
+}    # add_user
 
 # Channel List:
 sub cl {
@@ -117,7 +137,7 @@ sub pl {
   $self->{err}    = 0;
   $self->{errmsg} = undef;
   return @answer;
-}    # cl
+}    # pl
 
 # QUIT:
 sub quit {

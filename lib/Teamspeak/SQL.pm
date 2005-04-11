@@ -57,7 +57,7 @@ sub sl {
   return $self->{db}->selectall_hashref( $s, 'i_server_id' );
 }    # sl
 
-package channel;
+package Teamspeak::Channel;
 
 my @_parameter = ( 's_channel_description', 'dt_channel_created',
     's_channel_name', 'i_channel_parent_id', 'i_channel_codec',
@@ -79,7 +79,7 @@ sub store {
     $self->{errstr} = "$rows_affected Channels modified.";
     return 0; # should never happen, because i_channel_id is primary key.
   }
-}    # channel::store
+}    # Teamspeak::Channel::store
 
 sub parameter {
   my $self = shift;

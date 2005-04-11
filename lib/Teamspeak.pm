@@ -2,6 +2,8 @@
 # $URL$
 
 package Teamspeak;
+use Teamspeak::Channel;
+use Teamspeak::Player;
 
 use 5.004;
 use strict;
