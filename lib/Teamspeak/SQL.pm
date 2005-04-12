@@ -46,7 +46,7 @@ sub get_channel {
   my @result;
   foreach my $c ( keys %$all ) {
     $all->{$c}{dbh} = $self->{db}; # Database Handle for Updates.
-    push @result, bless( $all->{$c}, 'channel' );
+    push @result, bless( $all->{$c}, 'Teamspeak::Channel' );
   }
   return \@result;
 }    # get_channel
@@ -84,6 +84,6 @@ sub store {
 sub parameter {
   my $self = shift;
   return map { $_ =~ m/.+_channel_(.*)/; $1 } @_parameter;
-}    # channel::parameter
+}    # Teamspeak:Channel::parameter
 
 1;

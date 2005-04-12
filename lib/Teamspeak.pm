@@ -62,13 +62,13 @@ This document refers to version 0.2 of Teamspeak.
  
 =head1 DESCRIPTION
 
-You can connect to a Teamspeak-Server in four different ways:
+You can connect to a Teamspeak-Server in four different Connection-Types:
   1. Telnet
   2. MySQL or MySQL::Lite
   3. Web-Frontend
   4. Teamspeak-Client is using UDP
 
-Every Method can only administrate a part of all Methods together.
+Every Connection-Type can only use a part of all available Methods.
 
 =head2 Overview
 
