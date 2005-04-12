@@ -1,5 +1,7 @@
 Changes
 lib/Teamspeak.pm
+lib/Teamspeak/Channel.pm
+lib/Teamspeak/Player.pm
 lib/Teamspeak/SQL.pm
 lib/Teamspeak/SQL.pod
 lib/Teamspeak/Telnet.pm
@@ -7,7 +9,7 @@ lib/Teamspeak/Telnet.pod
 lib/Teamspeak/Web.pm
 LICENSE
 Makefile.PL
-MANIFEST			This list of files
+MANIFEST
 README
 t/01version.t
 t/02connect.t

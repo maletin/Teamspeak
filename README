@@ -15,9 +15,12 @@ DESCRIPTION
 
 LIMITATIONS
 
-    * The Telnet-Connection is not secure.
+    * The Web- and Telnet-Connections are not secure.
 
     * The MySQL-Interface has no functions at the Moment.
+
+    * The tests are not configurable and will fail without a local
+      Teamspeak Server.
 
 
 PREREQUISITES
@@ -38,7 +41,7 @@ INSTALLATION
 
 CHANGES AND FUTURE DEVELOPMENT
 
-    This readme refers to versions 0.1.
+    This readme refers to versions 0.2.
     For details of changes, refer to the file Changes.
 
 
