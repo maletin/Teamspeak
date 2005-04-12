@@ -40,9 +40,7 @@ sub sl {
   my $self = shift;
   $self->{sock}->print('sl');
   my @answer = $self->{sock}->waitfor('/OK$/');
-  $self->{err}    = 0;
-  $self->{errmsg} = undef;
-  return @answer;
+  return grep( /^\d+$/, split( /\cJ/, "@answer" ) );
 }
 
 # Select Server:
@@ -124,9 +122,21 @@ sub cl {
   my $self = shift;
   $self->{sock}->print('cl');
   my @answer = $self->{sock}->waitfor('/OK$/');
-  $self->{err}    = 0;
-  $self->{errmsg} = undef;
-  return @answer;
+  pop @answer;  # Last Line contains OK
+  my @lines = split( /\n/, "@answer" );
+  shift @lines; # First Line is empty
+  my $fields = shift @lines;
+  my @fields = split( /\t/, $fields );
+  my @result = ();
+  foreach my $line (@lines) {
+    my @r = split( /\t/, $line );
+    my %args = map {
+      $r[$_] =~ s/^"(.*)"$/$1/;
+      $r[$_] =~ s/^(\d\d)-(\d\d)-(\d{4})/$3-$2-$1/;
+      $fields[$_] => $r[$_] } 0..@r-1;
+    push( @result, { %args } );
+  }
+  return @result;
 }    # cl
 
 # Player List:
@@ -134,9 +144,21 @@ sub pl {
   my $self = shift;
   $self->{sock}->print('pl');
   my @answer = $self->{sock}->waitfor('/OK$/');
-  $self->{err}    = 0;
-  $self->{errmsg} = undef;
-  return @answer;
+  pop @answer;  # Last Line contains OK
+  my @lines = split( /\n/, "@answer" );
+  shift @lines; # First Line is empty
+  my $fields = shift @lines;
+  my @fields = split( /\t/, $fields );
+  my @result = ();
+  foreach my $line (@lines) {
+    my @r = split( /\t/, $line );
+    my %args = map {
+      $r[$_] =~ s/^"(.*)"$/$1/;
+      $r[$_] =~ s/^(\d\d)-(\d\d)-(\d{4})/$3-$2-$1/;
+      $fields[$_] => $r[$_] } 0..@r-1;
+    push( @result, { %args } );
+  }
+  return @result;
 }    # pl
 
 # QUIT:
