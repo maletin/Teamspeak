@@ -7,7 +7,7 @@ use 5.004;
 use strict;
 use DBI;
 use vars qw( $VERSION );
-$VERSION = '0.2';
+$VERSION = '0.3';
 my @ISA = qw( Teamspeak );
 
 sub connect {

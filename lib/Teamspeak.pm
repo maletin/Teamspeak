@@ -11,7 +11,7 @@ use Net::Telnet;
 use Carp;
 use vars qw( $VERSION );
 
-$VERSION = '0.2';
+$VERSION = '0.3';
 
 sub new {
   my ( $class, %arg ) = @_;
@@ -49,7 +49,7 @@ Teamspeak - Interface to administrate Teamspeak-Server.
 
 =head1 VERSION
 
-This document refers to version 0.2 of Teamspeak.
+This document refers to version 0.3 of Teamspeak.
 
 =head1 SYNOPSIS
 

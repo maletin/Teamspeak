@@ -7,7 +7,7 @@ use 5.004;
 use strict;
 use Carp;
 use vars qw( $VERSION );
-$VERSION = '0.2';
+$VERSION = '0.3';
 my @ISA = qw( Teamspeak );
 
 ## Module import.
@@ -15,13 +15,18 @@ use Net::Telnet;
 
 sub connect {
   my $self = shift;
-  my $t = Net::Telnet->new( Timeout => $self->{timeout} );
-  my_die("can't create Telnet-Instance") if ( !$t );
+  my $t = Net::Telnet->new( Timeout => $self->{timeout},
+      errmode => [ \&my_die, $self, 'Telnet Timeout' ] );
+  if( ! $t ) {
+    $self->my_die( "can't create Telnet-Instance" );
+    return undef;
+  }
   $t->open( Host => $self->{host}, Port => $self->{port} )
-    or my_die( $t->errmsg );
-  my @answer = $t->waitfor('/\[TS\]$/');
-  $self->{err}    = 0;
-  $self->{errmsg} = undef;
+    or do {
+      $self->my_die( "Telnet open $t->errmsg" );
+      return undef;
+    };
+  $t->waitfor('/\[TS\]$/');
   $self->{sock}   = $t;
 }    # connect
 
@@ -39,17 +44,15 @@ sub new {
 sub sl {
   my $self = shift;
   $self->{sock}->print('sl');
-  my @answer = $self->{sock}->waitfor('/OK$/');
-  return grep( /^\d+$/, split( /\cJ/, "@answer" ) );
+  my($answer) = $self->{sock}->waitfor('/OK$/');
+  return grep( /^\d+$/, split( /\n/, $answer ) );
 }
 
 # Select Server:
 sub sel {
   my ( $self, $server_id ) = @_;
   $self->{sock}->print("sel $server_id");
-  my @answer = $self->{sock}->waitfor('/OK$/');
-  $self->{err}    = 0;
-  $self->{errmsg} = undef;
+  my($answer) = $self->{sock}->waitfor('/OK$/');
   return 1;
 }    # sel
 
@@ -58,8 +61,7 @@ sub slogin {
   my ( $self, $login, $pwd ) = @_;
   $self->{sock}->print("slogin $login $pwd");
   $self->{sock}->waitfor('/OK$/');
-  $self->{err}    = 0;
-  $self->{errmsg} = undef;
+  $self->{slogin} = $login;
   return 1;
 }    # slogin
 
@@ -68,8 +70,7 @@ sub login {
   my ( $self, $login, $pwd ) = @_;
   $self->{sock}->print("login $login $pwd");
   $self->{sock}->waitfor('/OK$/');
-  $self->{err}    = 0;
-  $self->{errmsg} = undef;
+  $self->{login} = $login;
   return 1;
 }    # login
 
@@ -77,16 +78,20 @@ sub login {
 sub dbuserlist {
   my $self   = shift;
   my @result = ();
-  my_die("command needs login") if !logged_in();
+  if( ! $self->logged_in ) {
+    $self->my_die( "command needs login" );
+    return undef;
+  }
   $self->{sock}->print('dbuserlist');
-  my @answer = $self->{sock}->waitfor('/OK$/');
-  pop @answer;  # Last Line contains OK
-  my @lines = split( /\cJ/, "@answer" );
+  my($answer, $match) = $self->{sock}->waitfor('/(OK|ERROR,.*)$/');
+  return @result if( $match =~ /no data/ );
+  my @lines = split( /\n/, $answer );
   shift @lines; # First Line is empty
   my $fields = shift @lines;
-  my @fields = split( /\cI/, $fields );
+  return unless $fields;
+  my @fields = split( /\t/, $fields );
   foreach my $line (@lines) {
-    my @r = split( /\cI/, $line );
+    my @r = split( /\t/, $line );
     my %args = map {
       $r[$_] =~ s/^"(.*)"$/$1/;
       $r[$_] =~ s/^(\d\d)-(\d\d)-(\d{4})/$3-$2-$1/;
@@ -100,9 +105,7 @@ sub dbuserlist {
 sub delete_user {
   my ( $self, $user_id ) = @_;
   $self->{sock}->print("dbuserdel $user_id");
-  my @answer = $self->{sock}->waitfor('/OK$/');
-  $self->{err}    = 0;
-  $self->{errmsg} = undef;
+  $self->{sock}->waitfor('/OK$/');
   return 1;
 }    # delete_user
 
@@ -111,9 +114,7 @@ sub add_user {
   my ( $self, %args ) = @_;
   $args{admin} = 0 if $args{admin} != 1;
   $self->{sock}->print("dbuseradd $args{user} $args{pwd} $args{pwd} $args{admin}");
-  my @answer = $self->{sock}->waitfor('/OK$/');
-  $self->{err}    = 0;
-  $self->{errmsg} = undef;
+  $self->{sock}->waitfor('/OK$/');
   return 1;
 }    # add_user
 
@@ -121,9 +122,12 @@ sub add_user {
 sub cl {
   my $self = shift;
   $self->{sock}->print('cl');
-  my @answer = $self->{sock}->waitfor('/OK$/');
-  pop @answer;  # Last Line contains OK
-  my @lines = split( /\n/, "@answer" );
+  my($answer, $match) = $self->{sock}->waitfor('/(OK|ERROR.*)$/');
+  if( ! defined $match or $match =~ /ERROR/ ) {
+    $self->my_die( $match );
+    return undef;
+  }
+  my @lines = split( /\n/, $answer );
   shift @lines; # First Line is empty
   my $fields = shift @lines;
   my @fields = split( /\t/, $fields );
@@ -143,9 +147,12 @@ sub cl {
 sub pl {
   my $self = shift;
   $self->{sock}->print('pl');
-  my @answer = $self->{sock}->waitfor('/OK$/');
-  pop @answer;  # Last Line contains OK
-  my @lines = split( /\n/, "@answer" );
+  my($answer, $match) = $self->{sock}->waitfor('/(OK|ERROR.*)$/');
+  if( ! defined $match or $match =~ /ERROR/ ) {
+    $self->my_die( $match );
+    return undef;
+  }
+  my @lines = split( /\n/, $answer );
   shift @lines; # First Line is empty
   my $fields = shift @lines;
   my @fields = split( /\t/, $fields );
@@ -161,19 +168,26 @@ sub pl {
   return @result;
 }    # pl
 
-# QUIT:
-sub quit {
+# Disconnect:
+sub disconnect {
   my $self = shift;
   $self->{sock}->print('quit');
   delete $self->{sock};
 }
 
 sub my_die {
-  croak "my_die";
+  my($self, @msg) = @_;
+  $self->{err} = 1;
+  @msg = ( 'unknown error' ) if( ! @msg );
+  $self->{errmsg} = "@msg";
+  carp "my_die @msg";
 }
 
 sub logged_in {
-  1;    #TODO
+  my $self = shift;
+  return 2 if( defined $self->{slogin} );
+  return 1 if( defined $self->{login} );
+  return 0;
 }
 
 1;

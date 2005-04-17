@@ -1,6 +1,10 @@
 $Id$
 $URL$
 
+0.3 2005-04-17
+  Teamspeak::Telnet.pm is setting err and errmsg and is using Net::Telnet
+  more correct.
+
 0.2 2005-04-12
   This Module produce some useful results for a small set of methods.
 
