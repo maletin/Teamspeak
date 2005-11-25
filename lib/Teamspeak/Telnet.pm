@@ -101,6 +101,19 @@ sub dbuserlist {
   return @result;
 }    # dbuserlist
 
+# dbuserid
+sub dbuserid {
+  my $self = shift;
+  my $nick = shift;
+  $self->{sock}->print('dbuserid ' . $nick);
+  my($answer, $match) = $self->{sock}->waitfor('/(OK|ERROR*)$/');
+  if( ! defined $match or $match =~ /ERROR/ ) {
+    $self->my_die( $match );
+    return undef;
+  }
+  return int($answer);
+}	# dbuserid
+
 # Database userdelete:
 sub delete_user {
   my ( $self, $user_id ) = @_;
@@ -167,6 +180,112 @@ sub pl {
   }
   return @result;
 }    # pl
+
+# Find Player(s):
+sub fp {
+  my $self = shift;
+  my $nick = shift;
+  $self->{sock}->print('fp ' . $nick);
+  my($answer, $match) = $self->{sock}->waitfor('/(OK|ERROR.*)$/');
+  if( ! defined $match or $match =~ /ERROR/ ) {
+    $self->my_die( $match );
+    return undef;
+  }
+  my @lines = split( /\n/, $answer );
+  shift @lines; # First Line is empty
+  my $fields = shift @lines;
+  my @fields = split( /\t/, $fields );
+  my @result = ();
+  foreach my $line (@lines) {
+    my @r = split( /\t/, $line );
+    my %args = map {
+      $r[$_] =~ s/^"(.*)"$/$1/;
+      $fields[$_] => $r[$_] } 0..@r-1;
+    push( @result, { %args } );
+  }
+  return @result;
+}    # fp
+
+# adds an IP ban to the banlist (optional with time)
+sub banadd {
+  my $self = shift;
+  my $ip   = shift;
+  my $time = shift;
+  $self->{sock}->print('banadd ' . $ip . ' ' . $time);
+  my($answer, $match) = $self->{sock}->waitfor('/(OK|ERROR.*)$/');
+  if( ! defined $match or $match =~ /ERROR/ ) {
+    $self->my_die( $match );
+    return undef;
+  }
+  return 1;
+}    # banadd
+
+# bans the IP of a currently connected player
+sub banplayer {
+  my $self      = shift;
+  my $player_id = shift;
+  my $time      = shift;
+  $self->{sock}->print('banplayer ' . $player_id . ' ' . $time);
+  my($answer, $match) = $self->{sock}->waitfor('/(OK|ERROR.*)$/');
+  if( ! defined $match or $match =~ /ERROR/ ) {
+    $self->my_die( $match );
+    return undef;
+  }
+  return 1;
+}    # banplayer
+
+# kick a player of the server
+sub kick {
+  my $self      = shift;
+  my $player_id = shift;
+  $self->{sock}->print('kick ' . $player_id);
+  my($answer, $match) = $self->{sock}->waitfor('/(OK|ERROR.*)$/');
+  if( ! defined $match or $match =~ /ERROR/ ) {
+    $self->my_die( $match );
+    return undef;
+  }
+  return 1;
+}    # kick
+
+# disconnect a user silently from the server
+sub removeclient {
+  my $self      = shift;
+  my $player_id = shift;
+  $self->{sock}->print('removeclient ' . $player_id);
+  my($answer, $match) = $self->{sock}->waitfor('/(OK|ERROR.*)$/');
+  if( ! defined $match or $match =~ /ERROR/ ) {
+    $self->my_die( $match );
+    return undef;
+  }
+  return 1;
+}    # removeclient
+
+# Message to selected virtual server:
+sub msg {
+  my $self = shift;
+  my $text = shift;
+  $self->{sock}->print('msg ' . $text);
+  my($answer, $match) = $self->{sock}->waitfor('/(OK|ERROR.*)$/');
+  if( ! defined $match or $match =~ /ERROR/ ) {
+    $self->my_die( $match );
+    return undef;
+  }
+  return 1;
+}    # msg
+
+# Message to a user of the selected virtual server:
+sub msgu {
+  my $self = shift;
+  my $dbid = shift;
+  my $text = shift;
+  $self->{sock}->print('msgu ' . $dbid . ' ' . $text);
+  my($answer, $match) = $self->{sock}->waitfor('/(OK|ERROR.*)$/');
+  if( ! defined $match or $match =~ /ERROR/ ) {
+    $self->my_die( $match );
+    return undef;
+  }
+  return 1;
+}    # msgu
 
 # Disconnect:
 sub disconnect {
