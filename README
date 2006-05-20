@@ -1,5 +1,5 @@
 ==============================================================================
-                 Release of version 0.3 of Teamspeak
+                 Release of version 0.4 of Teamspeak
 ==============================================================================
 
 
@@ -41,7 +41,7 @@ INSTALLATION
 
 CHANGES AND FUTURE DEVELOPMENT
 
-    This readme refers to versions 0.3.
+    This readme refers to versions 0.4.
     For details of changes, refer to the file Changes.
 
 
@@ -52,7 +52,7 @@ AUTHOR
 
 COPYRIGHT
 
-     Copyright (c) 2005-2005, Martin von Oertzen. All Rights
+     Copyright (c) 2005-2006, Martin von Oertzen. All Rights
      Reserved.
      This module is free software. It may be used, redistributed
      and/or modified under the terms of the Perl Artistic License

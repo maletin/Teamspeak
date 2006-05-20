@@ -11,7 +11,7 @@ use Net::Telnet;
 use Carp;
 use vars qw( $VERSION );
 
-$VERSION = '0.3';
+$VERSION = '0.4';
 
 sub new {
   my ( $class, %arg ) = @_;
@@ -49,12 +49,12 @@ Teamspeak - Interface to administrate Teamspeak-Server.
 
 =head1 VERSION
 
-This document refers to version 0.3 of Teamspeak.
+This document refers to version 0.4 of Teamspeak.
 
 =head1 SYNOPSIS
 
  use Teamspeak;
- my $t = Teamspeak->new( 
+ my $tsh = Teamspeak->new( 
      timeout => <sec>,
      port => <port_number>,
      host => <ip_or_hostname>
@@ -103,10 +103,18 @@ http://rt.cpan.org/NoAuth/Dists.html?Queue=Teamspeak
 
 =head1 SEE ALSO
 
-Teamspeak::Core    Data-Structures for all Interfaces.
-Teamspeak::Telnet  The Telnet-Interface.
-Teamspeak::SQL     The SQL-Interface.
-Teamspeak::Web     The Web-Interface.
+The different Teamspeak-Handle-Interfaces:
+Teamspeak::Telnet, 
+Teamspeak::SQL,
+Teamspeak::Web.
+The different Objects:
+Teamspeak::Server,
+Teamspeak::Ban,
+Teamspeak::Player,
+Teamspeak::Channel,
+Teamspeak::Ban.
+The Homepage of the Sourecode:
+http://cpan-teamspeak.berlios.de/
 
 =head1 AUTHOR
 
@@ -114,6 +122,6 @@ Martin von Oertzen (maletin@cpan.org)
 
 =head1 COPYRIGHT
 
-Copyright (c) 2005-2005, Martin von Oertzen. All Rights Reserved.
+Copyright (c) 2005-2006, Martin von Oertzen. All Rights Reserved.
 This module is free software. It may be used, redistributed
 and/or modified under the same terms as Perl itself.

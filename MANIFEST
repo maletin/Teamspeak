@@ -1,7 +1,9 @@
 Changes
 lib/Teamspeak.pm
+lib/Teamspeak/Ban.pm
 lib/Teamspeak/Channel.pm
 lib/Teamspeak/Player.pm
+lib/Teamspeak/Privileges.pm
 lib/Teamspeak/SQL.pm
 lib/Teamspeak/SQL.pod
 lib/Teamspeak/Telnet.pm
@@ -10,6 +12,7 @@ lib/Teamspeak/Web.pm
 LICENSE
 Makefile.PL
 MANIFEST
+META.yml			Module meta-data (added by MakeMaker)
 README
 t/01version.t
 t/02connect.t
@@ -18,4 +21,5 @@ t/04sql.t
 t/05sqlite.t
 t/06sqlch.t
 t/07web.t
+t/08cl.t
 t/server.dbs

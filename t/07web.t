@@ -6,5 +6,5 @@ use strict;
 use Teamspeak;
 use Test::Simple tests => 1;
 
-my $n = Teamspeak->new( type => 'web' );
-ok( $n->connect( slogin => 'sa', pwd => 'sa' ), 'connect' );
+my $tsh = Teamspeak->new( type => 'web' );
+ok( $tsh->connect( slogin => 'sa', pwd => 'sa' ), 'connect' );

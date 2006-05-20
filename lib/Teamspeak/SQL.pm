@@ -7,14 +7,14 @@ use 5.004;
 use strict;
 use DBI;
 use vars qw( $VERSION );
-$VERSION = '0.3';
+$VERSION = '0.4';
 my @ISA = qw( Teamspeak );
 
 sub connect {
   my ( $self, $user, $pwd ) = @_;
   my $dsn;
   if ( $self->{d_file} ) {
-    $dsn = "dbi:SQLite:dbname=$self->{d_file}";
+    $dsn = "dbi:SQLite2:dbname=$self->{d_file}";
     $user = $pwd = '';
   } else {
     $dsn = "dbi:mysql:database=$self->{d_db}";
@@ -41,14 +41,14 @@ sub new {
 
 sub get_channel {
   my $self = shift;
+  $self->{channel} = {};    # Forget old values.
   my $s    = 'select * from ts2_channels';
   my $all  = $self->{db}->selectall_hashref( $s, 'i_channel_id' );
-  my @result;
   foreach my $c ( keys %$all ) {
-    $all->{$c}{dbh} = $self->{db};    # Database Handle for Updates.
-    push @result, bless( $all->{$c}, 'Teamspeak::Channel' );
+    $all->{$c}{tsh} = $self;    # a channel belongs to a Teamspeak-Handle.
+    $self->{channel}{$c} = bless( $all->{$c}, 'Teamspeak::Channel' );
   }
-  return \@result;
+  return keys %{$self->{channel}};
 }    # get_channel
 
 sub sl {

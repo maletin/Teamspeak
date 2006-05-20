@@ -6,10 +6,10 @@ use strict;
 use Teamspeak;
 use Test::Simple tests => 1;
 
-my $n = Teamspeak->new(
+my $tsh = Teamspeak->new(
   type => 'sql',
   host => 'localhost',
   db   => 'teamspeak'
 );
-$n->connect( 'teamspeak', 'teamspeak' );
-ok( defined $n->sl, 'sql sl' );
+$tsh->connect( 'teamspeak', 'teamspeak' );
+ok( defined $tsh->sl, 'sql sl' );

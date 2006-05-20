@@ -1,6 +1,9 @@
 $Id$
 $URL$
 
+0.4 2006-05-20
+  New Objects Ban and Privileges for different Handles.
+
 0.3 2005-04-17
   Teamspeak::Telnet.pm is setting err and errmsg and is using Net::Telnet
   more correct.

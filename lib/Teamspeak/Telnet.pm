@@ -7,7 +7,7 @@ use 5.004;
 use strict;
 use Carp;
 use vars qw( $VERSION );
-$VERSION = '0.3';
+$VERSION = '0.4';
 my @ISA = qw( Teamspeak );
 
 ## Module import.
@@ -157,9 +157,11 @@ sub cl {
       $r[$_] =~ s/^(\d\d)-(\d\d)-(\d{4})/$3-$2-$1/;
       $fields[$_] => $r[$_]
     } 0 .. @r - 1;
-    push( @result, {%args} );
+    my $ch = Teamspeak::Channel->new(%args);
+    $ch->{tsh} = $self;
+    $self->{channel}{ $r[0] } = $ch;
   }
-  return @result;
+  return scalar keys %{ $self->{channel} };
 }    # cl
 
 # Player List:
@@ -316,5 +318,82 @@ sub logged_in {
   return 1 if ( defined $self->{login} );
   return 0;
 }
+
+sub channels {
+  if ( defined $_[0]->{channel} and ref( $_[0]->{channel} ) eq 'HASH' ) {
+    return keys( %{ $_[0]->{channel} } );
+  } else {
+    return undef;
+  }
+}    # channels
+
+package Teamspeak::Channel;
+
+my @_parameters =
+  ( 'id', 'name', 'topic', 'parent', 'flags', 'maxusers', 'password', 'order' );
+
+sub parameter {
+  return @_parameters;
+}
+
+sub new {
+  my ( $class, %arg ) = @_;
+  bless {
+    id       => $arg{id},
+    parent   => $arg{parent},
+    order    => $arg{order},
+    maxusers => $arg{maxusers},
+    name     => $arg{name},
+    flags    => $arg{flags},
+    password => $arg{password},
+    topic    => $arg{topic},
+    },
+    ref($class) || $class;
+}    # new
+
+sub id {
+  my $self = shift;
+  return $self->{id};
+}
+
+sub codec {
+  my $self = shift;
+  return $self->{codec};
+}
+
+sub parent {
+  my $self = shift;
+  return $self->{parent};
+}
+
+sub order {
+  my $self = shift;
+  return $self->{order};
+}
+
+sub maxusers {
+  my $self = shift;
+  return $self->{maxusers};
+}
+
+sub name {
+  my $self = shift;
+  return $self->{name};
+}
+
+sub flags {
+  my $self = shift;
+  return $self->{flags};
+}
+
+sub password {
+  my $self = shift;
+  return $self->{password};
+}
+
+sub topic {
+  my $self = shift;
+  return $self->{topic};
+}    # topic
 
 1;
