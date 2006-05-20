@@ -1,3 +1,4 @@
+
 =head1 NAME
 
 Teamspeak::SQL - SQL-Interface to administrate Teamspeak-Voice-Server
@@ -176,3 +177,4 @@ for TS-Server of Version 2.0.20.1
 =back
 
 =cut
+

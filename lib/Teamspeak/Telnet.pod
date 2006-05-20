@@ -1,3 +1,4 @@
+
 =head1 NAME
 
 Teamspeak::Telnet - Telnet-Interface to administrate
@@ -1286,3 +1287,4 @@ and/or modified under the same terms as Perl itself.
 =back
 
 =cut
+

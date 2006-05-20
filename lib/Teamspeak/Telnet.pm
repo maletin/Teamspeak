@@ -15,19 +15,21 @@ use Net::Telnet;
 
 sub connect {
   my $self = shift;
-  my $t = Net::Telnet->new( Timeout => $self->{timeout},
-      errmode => [ \&my_die, $self, 'Telnet Timeout' ] );
-  if( ! $t ) {
-    $self->my_die( "can't create Telnet-Instance" );
+  my $t    = Net::Telnet->new(
+    Timeout => $self->{timeout},
+    errmode => [ \&my_die, $self, 'Telnet Timeout' ]
+  );
+  if ( !$t ) {
+    $self->my_die("can't create Telnet-Instance");
     return undef;
   }
   $t->open( Host => $self->{host}, Port => $self->{port} )
     or do {
-      $self->my_die( "Telnet open $t->errmsg" );
-      return undef;
+    $self->my_die("Telnet open $t->errmsg");
+    return undef;
     };
   $t->waitfor('/\[TS\]$/');
-  $self->{sock}   = $t;
+  $self->{sock} = $t;
 }    # connect
 
 sub new {
@@ -44,7 +46,7 @@ sub new {
 sub sl {
   my $self = shift;
   $self->{sock}->print('sl');
-  my($answer) = $self->{sock}->waitfor('/OK$/');
+  my ($answer) = $self->{sock}->waitfor('/OK$/');
   return grep( /^\d+$/, split( /\n/, $answer ) );
 }
 
@@ -52,7 +54,7 @@ sub sl {
 sub sel {
   my ( $self, $server_id ) = @_;
   $self->{sock}->print("sel $server_id");
-  my($answer) = $self->{sock}->waitfor('/OK$/');
+  my ($answer) = $self->{sock}->waitfor('/OK$/');
   return 1;
 }    # sel
 
@@ -78,25 +80,27 @@ sub login {
 sub dbuserlist {
   my $self   = shift;
   my @result = ();
-  if( ! $self->logged_in ) {
-    $self->my_die( "command needs login" );
+  if ( !$self->logged_in ) {
+    $self->my_die("command needs login");
     return undef;
   }
   $self->{sock}->print('dbuserlist');
-  my($answer, $match) = $self->{sock}->waitfor('/(OK|ERROR,.*)$/');
-  return @result if( $match =~ /no data/ );
+  my ( $answer, $match ) = $self->{sock}->waitfor('/(OK|ERROR,.*)$/');
+  return @result if ( $match =~ /no data/ );
   my @lines = split( /\n/, $answer );
-  shift @lines; # First Line is empty
+  shift @lines;    # First Line is empty
   my $fields = shift @lines;
   return unless $fields;
   my @fields = split( /\t/, $fields );
+
   foreach my $line (@lines) {
     my @r = split( /\t/, $line );
     my %args = map {
       $r[$_] =~ s/^"(.*)"$/$1/;
       $r[$_] =~ s/^(\d\d)-(\d\d)-(\d{4})/$3-$2-$1/;
-      $fields[$_] => $r[$_] } 0..@r-1;
-    push( @result, { %args } );
+      $fields[$_] => $r[$_]
+    } 0 .. @r - 1;
+    push( @result, {%args} );
   }
   return @result;
 }    # dbuserlist
@@ -105,14 +109,14 @@ sub dbuserlist {
 sub dbuserid {
   my $self = shift;
   my $nick = shift;
-  $self->{sock}->print('dbuserid ' . $nick);
-  my($answer, $match) = $self->{sock}->waitfor('/(OK|ERROR*)$/');
-  if( ! defined $match or $match =~ /ERROR/ ) {
-    $self->my_die( $match );
+  $self->{sock}->print( 'dbuserid ' . $nick );
+  my ( $answer, $match ) = $self->{sock}->waitfor('/(OK|ERROR*)$/');
+  if ( !defined $match or $match =~ /ERROR/ ) {
+    $self->my_die($match);
     return undef;
   }
   return int($answer);
-}	# dbuserid
+}    # dbuserid
 
 # Database userdelete:
 sub delete_user {
@@ -126,7 +130,8 @@ sub delete_user {
 sub add_user {
   my ( $self, %args ) = @_;
   $args{admin} = 0 if $args{admin} != 1;
-  $self->{sock}->print("dbuseradd $args{user} $args{pwd} $args{pwd} $args{admin}");
+  $self->{sock}
+    ->print("dbuseradd $args{user} $args{pwd} $args{pwd} $args{admin}");
   $self->{sock}->waitfor('/OK$/');
   return 1;
 }    # add_user
@@ -135,13 +140,13 @@ sub add_user {
 sub cl {
   my $self = shift;
   $self->{sock}->print('cl');
-  my($answer, $match) = $self->{sock}->waitfor('/(OK|ERROR.*)$/');
-  if( ! defined $match or $match =~ /ERROR/ ) {
-    $self->my_die( $match );
+  my ( $answer, $match ) = $self->{sock}->waitfor('/(OK|ERROR.*)$/');
+  if ( !defined $match or $match =~ /ERROR/ ) {
+    $self->my_die($match);
     return undef;
   }
   my @lines = split( /\n/, $answer );
-  shift @lines; # First Line is empty
+  shift @lines;    # First Line is empty
   my $fields = shift @lines;
   my @fields = split( /\t/, $fields );
   my @result = ();
@@ -150,8 +155,9 @@ sub cl {
     my %args = map {
       $r[$_] =~ s/^"(.*)"$/$1/;
       $r[$_] =~ s/^(\d\d)-(\d\d)-(\d{4})/$3-$2-$1/;
-      $fields[$_] => $r[$_] } 0..@r-1;
-    push( @result, { %args } );
+      $fields[$_] => $r[$_]
+    } 0 .. @r - 1;
+    push( @result, {%args} );
   }
   return @result;
 }    # cl
@@ -160,13 +166,13 @@ sub cl {
 sub pl {
   my $self = shift;
   $self->{sock}->print('pl');
-  my($answer, $match) = $self->{sock}->waitfor('/(OK|ERROR.*)$/');
-  if( ! defined $match or $match =~ /ERROR/ ) {
-    $self->my_die( $match );
+  my ( $answer, $match ) = $self->{sock}->waitfor('/(OK|ERROR.*)$/');
+  if ( !defined $match or $match =~ /ERROR/ ) {
+    $self->my_die($match);
     return undef;
   }
   my @lines = split( /\n/, $answer );
-  shift @lines; # First Line is empty
+  shift @lines;    # First Line is empty
   my $fields = shift @lines;
   my @fields = split( /\t/, $fields );
   my @result = ();
@@ -175,8 +181,9 @@ sub pl {
     my %args = map {
       $r[$_] =~ s/^"(.*)"$/$1/;
       $r[$_] =~ s/^(\d\d)-(\d\d)-(\d{4})/$3-$2-$1/;
-      $fields[$_] => $r[$_] } 0..@r-1;
-    push( @result, { %args } );
+      $fields[$_] => $r[$_]
+    } 0 .. @r - 1;
+    push( @result, {%args} );
   }
   return @result;
 }    # pl
@@ -185,14 +192,14 @@ sub pl {
 sub fp {
   my $self = shift;
   my $nick = shift;
-  $self->{sock}->print('fp ' . $nick);
-  my($answer, $match) = $self->{sock}->waitfor('/(OK|ERROR.*)$/');
-  if( ! defined $match or $match =~ /ERROR/ ) {
-    $self->my_die( $match );
+  $self->{sock}->print( 'fp ' . $nick );
+  my ( $answer, $match ) = $self->{sock}->waitfor('/(OK|ERROR.*)$/');
+  if ( !defined $match or $match =~ /ERROR/ ) {
+    $self->my_die($match);
     return undef;
   }
   my @lines = split( /\n/, $answer );
-  shift @lines; # First Line is empty
+  shift @lines;    # First Line is empty
   my $fields = shift @lines;
   my @fields = split( /\t/, $fields );
   my @result = ();
@@ -200,8 +207,9 @@ sub fp {
     my @r = split( /\t/, $line );
     my %args = map {
       $r[$_] =~ s/^"(.*)"$/$1/;
-      $fields[$_] => $r[$_] } 0..@r-1;
-    push( @result, { %args } );
+      $fields[$_] => $r[$_]
+    } 0 .. @r - 1;
+    push( @result, {%args} );
   }
   return @result;
 }    # fp
@@ -211,10 +219,10 @@ sub banadd {
   my $self = shift;
   my $ip   = shift;
   my $time = shift;
-  $self->{sock}->print('banadd ' . $ip . ' ' . $time);
-  my($answer, $match) = $self->{sock}->waitfor('/(OK|ERROR.*)$/');
-  if( ! defined $match or $match =~ /ERROR/ ) {
-    $self->my_die( $match );
+  $self->{sock}->print( 'banadd ' . $ip . ' ' . $time );
+  my ( $answer, $match ) = $self->{sock}->waitfor('/(OK|ERROR.*)$/');
+  if ( !defined $match or $match =~ /ERROR/ ) {
+    $self->my_die($match);
     return undef;
   }
   return 1;
@@ -225,10 +233,10 @@ sub banplayer {
   my $self      = shift;
   my $player_id = shift;
   my $time      = shift;
-  $self->{sock}->print('banplayer ' . $player_id . ' ' . $time);
-  my($answer, $match) = $self->{sock}->waitfor('/(OK|ERROR.*)$/');
-  if( ! defined $match or $match =~ /ERROR/ ) {
-    $self->my_die( $match );
+  $self->{sock}->print( 'banplayer ' . $player_id . ' ' . $time );
+  my ( $answer, $match ) = $self->{sock}->waitfor('/(OK|ERROR.*)$/');
+  if ( !defined $match or $match =~ /ERROR/ ) {
+    $self->my_die($match);
     return undef;
   }
   return 1;
@@ -238,10 +246,10 @@ sub banplayer {
 sub kick {
   my $self      = shift;
   my $player_id = shift;
-  $self->{sock}->print('kick ' . $player_id);
-  my($answer, $match) = $self->{sock}->waitfor('/(OK|ERROR.*)$/');
-  if( ! defined $match or $match =~ /ERROR/ ) {
-    $self->my_die( $match );
+  $self->{sock}->print( 'kick ' . $player_id );
+  my ( $answer, $match ) = $self->{sock}->waitfor('/(OK|ERROR.*)$/');
+  if ( !defined $match or $match =~ /ERROR/ ) {
+    $self->my_die($match);
     return undef;
   }
   return 1;
@@ -251,10 +259,10 @@ sub kick {
 sub removeclient {
   my $self      = shift;
   my $player_id = shift;
-  $self->{sock}->print('removeclient ' . $player_id);
-  my($answer, $match) = $self->{sock}->waitfor('/(OK|ERROR.*)$/');
-  if( ! defined $match or $match =~ /ERROR/ ) {
-    $self->my_die( $match );
+  $self->{sock}->print( 'removeclient ' . $player_id );
+  my ( $answer, $match ) = $self->{sock}->waitfor('/(OK|ERROR.*)$/');
+  if ( !defined $match or $match =~ /ERROR/ ) {
+    $self->my_die($match);
     return undef;
   }
   return 1;
@@ -264,10 +272,10 @@ sub removeclient {
 sub msg {
   my $self = shift;
   my $text = shift;
-  $self->{sock}->print('msg ' . $text);
-  my($answer, $match) = $self->{sock}->waitfor('/(OK|ERROR.*)$/');
-  if( ! defined $match or $match =~ /ERROR/ ) {
-    $self->my_die( $match );
+  $self->{sock}->print( 'msg ' . $text );
+  my ( $answer, $match ) = $self->{sock}->waitfor('/(OK|ERROR.*)$/');
+  if ( !defined $match or $match =~ /ERROR/ ) {
+    $self->my_die($match);
     return undef;
   }
   return 1;
@@ -278,10 +286,10 @@ sub msgu {
   my $self = shift;
   my $dbid = shift;
   my $text = shift;
-  $self->{sock}->print('msgu ' . $dbid . ' ' . $text);
-  my($answer, $match) = $self->{sock}->waitfor('/(OK|ERROR.*)$/');
-  if( ! defined $match or $match =~ /ERROR/ ) {
-    $self->my_die( $match );
+  $self->{sock}->print( 'msgu ' . $dbid . ' ' . $text );
+  my ( $answer, $match ) = $self->{sock}->waitfor('/(OK|ERROR.*)$/');
+  if ( !defined $match or $match =~ /ERROR/ ) {
+    $self->my_die($match);
     return undef;
   }
   return 1;
@@ -295,17 +303,17 @@ sub disconnect {
 }
 
 sub my_die {
-  my($self, @msg) = @_;
+  my ( $self, @msg ) = @_;
   $self->{err} = 1;
-  @msg = ( 'unknown error' ) if( ! @msg );
+  @msg = ('unknown error') if ( !@msg );
   $self->{errmsg} = "@msg";
   carp "my_die @msg";
 }
 
 sub logged_in {
   my $self = shift;
-  return 2 if( defined $self->{slogin} );
-  return 1 if( defined $self->{login} );
+  return 2 if ( defined $self->{slogin} );
+  return 1 if ( defined $self->{login} );
   return 0;
 }
 

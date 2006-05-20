@@ -14,23 +14,24 @@ sub slogin {
   my ( $self, $login, $password ) = @_;
   my $mech = $self->{mech};
   $mech->follow_link;
-  $mech->submit_form( fields => { username => $login, password => $password } ) or return $self->error( 'slogin' );
+  $mech->submit_form( fields => { username => $login, password => $password } )
+    or return $self->error('slogin');
   $self->{slogin} = $login;
-  $self->{err} = undef;
+  $self->{err}    = undef;
   $self->{errstr} = undef;
   return 1;
-} # slogin
+}    # slogin
 
 sub connect {
   my ( $self, %arg ) = @_;
-  my $url = "http://$self->{w_host}:$self->{w_port}/";
+  my $url  = "http://$self->{w_host}:$self->{w_port}/";
   my $mech = WWW::Mechanize->new;
-  $mech->get( $url ) or return $self->error( 'connect' );
-  $self->{mech} = $mech;
+  $mech->get($url) or return $self->error('connect');
+  $self->{mech}    = $mech;
   $self->{connect} = 1;
-  $self->login( $arg{login}, $arg{pwd} ) if( $arg{login} );
-  $self->slogin( $arg{slogin}, $arg{pwd} ) if( $arg{slogin} );
-  return 1; # Success
+  $self->login( $arg{login}, $arg{pwd} ) if ( $arg{login} );
+  $self->slogin( $arg{slogin}, $arg{pwd} ) if ( $arg{slogin} );
+  return 1;    # Success
 }    # connect
 
 sub new {
