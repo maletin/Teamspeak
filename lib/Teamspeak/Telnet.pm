@@ -164,6 +164,30 @@ sub cl {
   return scalar keys %{ $self->{channel} };
 }    # cl
 
+# Player Information
+sub pi {
+  my $self     = shift;
+  my $playerid = shift;
+  $self->{sock}->print('pi ' . $playerid);
+  my ( $answer, $match ) = $self->{sock}->waitfor('/(OK|ERROR.*)$/');
+  if ( !defined $match or $match =~ /ERROR/ ) {
+    $self->my_die($match);
+    return undef;
+  }
+  my @lines = split( /\n/, $answer );
+  shift @lines;    # First Line is empty
+  my $fields = shift @lines;
+  my @fields = split( /\t/, $fields );
+  my @result = ();
+  my $line = shift @lines;
+  my @r = split( /\t/, $line );
+  my %args = map {
+    $r[$_] =~ s/^"(.*)"$/$1/;
+    $fields[$_] => $r[$_]
+  } 0 .. @r - 1;
+  return \%args;
+} # pi
+
 # Player List:
 sub pl {
   my $self = shift;
@@ -194,26 +218,52 @@ sub pl {
 sub fp {
   my $self = shift;
   my $nick = shift;
-  $self->{sock}->print( 'fp ' . $nick );
-  my ( $answer, $match ) = $self->{sock}->waitfor('/(OK|ERROR.*)$/');
-  if ( !defined $match or $match =~ /ERROR/ ) {
-    $self->my_die($match);
-    return undef;
+  if ($nick =~ / /) { 
+    # the nickname contains a space-char and we cannot escape that space
+    # for the fp-command, so we use the output of pl to simulate the result
+    my @plresult = $self->pl();
+    if (@plresult) {
+      my @result = ();
+      foreach my $playerref (@plresult) {
+        my %player = %{$playerref};
+        if (($player{nick} =~ /$nick/) || ($player{loginname} =~ /$nick/)) {
+          my %args = ( p_id => $player{p_id}, p_dbid => 0, c_id => $player{c_id}, nickname => $player{nick}, loginname => $player{loginname}, ip => $player{ip} );
+          if ($player{loginname}) { # player has an loginname, so he has a dbid too, but we dont get that via pl, so ask pi
+            my $piinforef = $self->pi($player{p_id});
+            if ($piinforef) {
+              my %piinfo = %{$piinforef};
+              $args{p_dbid} = $piinfo{p_dbid};
+            }
+          }
+          push( @result, \%args );
+        }
+      }
+      return @result;
+    } else {
+      return undef;
+    }
+  } else {
+    $self->{sock}->print( 'fp ' . $nick );
+    my ( $answer, $match ) = $self->{sock}->waitfor('/(OK|ERROR.*)$/');
+    if ( !defined $match or $match =~ /ERROR/ ) {
+      $self->my_die($match);
+      return undef;
+    }
+    my @lines = split( /\n/, $answer );
+    shift @lines;    # First Line is empty
+    my $fields = shift @lines;
+    my @fields = split( /\t/, $fields );
+    my @result = ();
+    foreach my $line (@lines) {
+      my @r = split( /\t/, $line );
+      my %args = map {
+        $r[$_] =~ s/^"(.*)"$/$1/;
+        $fields[$_] => $r[$_]
+      } 0 .. @r - 1;
+      push( @result, {%args} );
+    }
+    return @result;
   }
-  my @lines = split( /\n/, $answer );
-  shift @lines;    # First Line is empty
-  my $fields = shift @lines;
-  my @fields = split( /\t/, $fields );
-  my @result = ();
-  foreach my $line (@lines) {
-    my @r = split( /\t/, $line );
-    my %args = map {
-      $r[$_] =~ s/^"(.*)"$/$1/;
-      $fields[$_] => $r[$_]
-    } 0 .. @r - 1;
-    push( @result, {%args} );
-  }
-  return @result;
 }    # fp
 
 # adds an IP ban to the banlist (optional with time)
@@ -256,6 +306,50 @@ sub kick {
   }
   return 1;
 }    # kick
+
+# set attributes of virtual servers
+sub serverset {
+  my $self            = shift;
+  my $attribute_name  = shift;
+  my $attribute_value = shift;
+#?? surround the value with "" ?
+  $self->{sock}->print( 'serverset ' . $attribute_name . ' ' . $attribute_value );
+  my ( $answer, $match ) = $self->{sock}->waitfor('/(OK|ERROR.*)$/');
+  if ( !defined $match or $match =~ /ERROR/ ) {
+    $self->my_die($match);
+    return undef;
+  }
+  return 1;
+} # serverset
+
+# gets the average packet loss
+sub gapl {
+  my $self = shift;
+  my $port = shift;
+  if ($port) { $self->{sock}->print( 'gapl ' . $port ); }
+  else       { $self->{sock}->print( 'gapl' );          }
+  my ( $answer, $match ) = $self->{sock}->waitfor('/(OK|ERROR.*)$/');
+  if ( !defined $match or $match =~ /ERROR/ ) {
+    $self->my_die($match);
+    return undef;
+  }
+  $answer =~ /=([\d\.]+)%/;
+  return $1;
+} # gapl
+
+# move a player to a channel
+sub mptc {
+  my $self       = shift;
+  my $channel_id = shift;
+  my $player_id  = shift;
+  $self->{sock}->print( 'mptc ' . $channel_id . ' ' . $player_id );
+  my ( $answer, $match ) = $self->{sock}->waitfor('/(OK|ERROR.*)$/');
+  if ( !defined $match or $match =~ /ERROR/ ) {
+    $self->my_die($match);
+    return undef;
+  }
+  return 1;
+} # mptc
 
 # disconnect a user silently from the server
 sub removeclient {
