@@ -3,9 +3,29 @@
 
 Teamspeak::SQL - SQL-Interface to administrate Teamspeak-Voice-Server
 
+=head1 CLASS METHODS
+
+=head2 connect ( user => $dbuser, pwd => $pwd )
+
+MySQL needs a username and password to connect to the database.
+
+=head2 new ( host => 'localhost', port => 3306, db => $dbname )
+=head2 new ( file => $filename )
+
+MySQL needs a host, port and db parameter.
+SQLite needs the filename of the server.dbm.
+
+=head2 sl
+
+Returns a list of L<"Teamspeak::Server">s.
+
+=head2 get_channel
+
+Retrieves or refreshes the channel list of the TS-Server.
+
 =head1 DATABASE STRUCTURE
 
-for TS-Server of Version 2.0.20.1
+for TS-Server of Version 2.0.23.19
 
 =head2 ts2_bans
 
@@ -166,7 +186,7 @@ for TS-Server of Version 2.0.20.1
 
 =head1 AVAILABILITY
 
-=over 0
+=over
 
 =item Teamspeak::SQL has been uploaded to the CPAN.
 

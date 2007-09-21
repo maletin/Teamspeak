@@ -4,6 +4,59 @@
 Teamspeak::Telnet - Telnet-Interface to administrate
                     Teamspeak-Voice-Server
 
+=head1 CLASS METHODS
+
+=head2 connect()
+
+Connects to the Teamspeak-Server.
+
+=head2 new( host => 'localhost', port => 51234, timeout => 4 )
+
+Creates the object and set a Telnet timeout.
+
+=head2 add_user( user => 'username', pwd => 'password', [ admin => 1 ] )
+
+Adds a user to the server database.
+Optionally with Admin rights.
+
+=head2 delete_user ( $player_id )
+
+Removes the user from the user database.
+
+=head2 banplayer( $player_id, $time )
+
+Bans the L<"Teamspeak::Player"> for $time seconds.
+
+=head2 removeclient ( $player_id )
+
+Disconnects the Player from the TS-Server.
+
+=head2 msg ( 'Hello all' )
+
+Sends a Text Message to the selected server.
+
+=head2  msgu ( $database_user_id, 'Text message' )
+
+Sends a Text Message to a User.
+
+=head2 disconnect
+
+Disconnects from the TS-Server.
+
+=head2 my_die( 'error message' )
+
+Calls Teamspeak::_croak to croak.
+
+=head2 logged_in()
+
+Returns 2 if superadmin is logged in.
+Returns 1 if a normal user is logged in.
+Returns 0 otherwise.
+
+=head2 channels()
+
+Returns a list of channels at the selected server.
+
 =head1 COMMAND OVERVIEW
 
   banadd              : add ip ban
@@ -1276,7 +1329,7 @@ and/or modified under the same terms as Perl itself.
 
 =head1 AVAILABILITY
 
-=over 0
+=over
 
 =item Teamspeak::Telnet has been uploaded to the CPAN.
 

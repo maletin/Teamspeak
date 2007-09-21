@@ -5,9 +5,6 @@ package Teamspeak::Channel;
 
 use strict;
 use vars qw( $VERSION );
-$VERSION = '0.4';
-
-sub new {
-}
+$VERSION = '0.5';
 
 1;

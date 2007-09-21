@@ -11,33 +11,37 @@ use Net::Telnet;
 use Carp;
 use vars qw( $VERSION );
 
-$VERSION = '0.4';
+$VERSION = '0.5';
 
 sub new {
-  my ( $class, %arg ) = @_;
-  if ( $arg{type} eq 'telnet' ) {
-    require Teamspeak::Telnet;
-    return Teamspeak::Telnet->new(%arg);
-  } elsif ( $arg{type} eq 'sql' ) {
-    require Teamspeak::SQL;
-    return Teamspeak::SQL->new(%arg);
-  } elsif ( $arg{type} eq 'web' ) {
-    require Teamspeak::Web;
-    return Teamspeak::Web->new(%arg);
-  } else {
-    die("unknown type $arg{type}");
-  }
+    my ( $class, %arg ) = @_;
+    if ( $arg{type} eq 'telnet' ) {
+        require Teamspeak::Telnet;
+        return Teamspeak::Telnet->new(%arg);
+    }
+    elsif ( $arg{type} eq 'sql' ) {
+        require Teamspeak::SQL;
+        return Teamspeak::SQL->new(%arg);
+    }
+    elsif ( $arg{type} eq 'web' ) {
+        require Teamspeak::Web;
+        return Teamspeak::Web->new(%arg);
+    }
+    else {
+        die("unknown type $arg{type}");
+    }
 }    # new
 
 sub error {
-  $_[0]->{err}    = 1;
-  $_[0]->{errstr} = $_[1];
-  return 0;
+    $_[0]->{err}    = 1;
+    $_[0]->{errstr} = $_[1];
+    return 0;
 }    # error
 
-sub my_die {
-  croak "my_die";
-}    # my_die
+sub _croak {
+    my ($self, $msg) = @_;
+    Carp::croak($msg || $self);
+}
 
 1;
 
@@ -49,7 +53,7 @@ Teamspeak - Interface to administrate Teamspeak-Server.
 
 =head1 VERSION
 
-This document refers to version 0.4 of Teamspeak.
+This document refers to version 0.5 of Teamspeak.
 
 =head1 SYNOPSIS
 

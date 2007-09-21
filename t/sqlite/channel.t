@@ -8,7 +8,7 @@ use Test::Simple tests => 3;
 
 my $ths = Teamspeak->new(
   type => 'sql',
-  file => 't/server.dbs'
+  file => 't/sqlite/server.dbs'
 );
 $ths->connect( '', '' );
 ok( defined $ths->sl, 'sqlite sl' );

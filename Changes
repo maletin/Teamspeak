@@ -1,6 +1,11 @@
 $Id$
 $URL$
 
+0.5 2007-09-21
+  New Tests.
+  Teamspeak::Telnet::Channel.
+  perltidy -pbp
+
 0.4 2006-05-20
   New Objects Ban and Privileges for different Handles.
 
