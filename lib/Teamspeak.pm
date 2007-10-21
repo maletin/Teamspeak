@@ -11,7 +11,7 @@ use Net::Telnet;
 use Carp;
 use vars qw( $VERSION );
 
-$VERSION = '0.5';
+$VERSION = '0.6';
 
 sub new {
     my ( $class, %arg ) = @_;
@@ -53,7 +53,7 @@ Teamspeak - Interface to administrate Teamspeak-Server.
 
 =head1 VERSION
 
-This document refers to version 0.5 of Teamspeak.
+This document refers to version 0.6 of Teamspeak.
 
 =head1 SYNOPSIS
 
@@ -126,6 +126,6 @@ Martin von Oertzen (maletin@cpan.org)
 
 =head1 COPYRIGHT
 
-Copyright (c) 2005-2006, Martin von Oertzen. All Rights Reserved.
+Copyright (c) 2005-2007, Martin von Oertzen. All Rights Reserved.
 This module is free software. It may be used, redistributed
 and/or modified under the same terms as Perl itself.

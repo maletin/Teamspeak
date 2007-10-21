@@ -8,7 +8,7 @@ use strict;
 use Carp;
 use vars qw( $VERSION );
 use Teamspeak::Telnet::Channel;
-$VERSION = '0.5';
+$VERSION = '0.6';
 my @ISA = qw( Teamspeak );
 
 ## Module import.
