@@ -13,7 +13,10 @@ pm_to_blib
 ^MANIFEST\.
 ^Makefile$
 ^blib/
+^blibdirs$
 ^MakeMaker-\d
+^Build$
+^_build/
 
 # Temp, old and emacs backup files.
 ~$

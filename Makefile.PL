@@ -10,10 +10,12 @@ my %config = (
     VERSION_FROM  => 'lib/Teamspeak.pm',
     ABSTRACT_FROM => 'lib/Teamspeak.pm',
     PREREQ_PM     => {
-        'Test::More'     => 0,
-        'DBI'            => 0,
-        'Net::Telnet'    => 0,
-        'WWW::Mechanize' => 0,
+        'Test::More'       => 0,
+        'DBI'              => 0,
+        'Net::Telnet'      => 0,
+        'WWW::Mechanize'   => 0,
+        'Test::Signature'  => 1.04,
+        'Module::Signature' => 0.22,
     },
     dist => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
 );

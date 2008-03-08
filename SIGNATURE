@@ -1,0 +1,59 @@
+This file contains message digests of all files listed in MANIFEST,
+signed via the Module::Signature module, version 0.55.
+
+To verify the content in this distribution, first make sure you have
+Module::Signature installed, then type:
+
+    % cpansign -v
+
+It will check each file's integrity, as well as the signature's
+validity.  If "==> Signature verified OK! <==" is not displayed,
+the distribution may already have been compromised, and you should
+not run its Makefile.PL or Build.PL.
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+SHA1 9ceb34120ccfce4d17f07601da4cdb647fa6bba9 Changes
+SHA1 6ca684af4fef50a7cad03b5921f8aaa4f8245898 LICENSE
+SHA1 fbe787b93ab54318b0fc01a34a32a30b9ff4c41c MANIFEST
+SHA1 5afb04c19d4932e42a467618d0627cd2cf3e1b46 Makefile.PL
+SHA1 45eab59c854c811f3c32b883000b1379f5f993cc README
+SHA1 02de5cd8ecc404df405b6bc9c1f595a11f8c8615 lib/Teamspeak.pm
+SHA1 b59f0d05ce04afcba4a5dfbc03be12584aa24455 lib/Teamspeak/Ban.pm
+SHA1 1ba3ba3b9ded21c22e4b6cc3aeac1d45459071ec lib/Teamspeak/Ban.pod
+SHA1 fa77a91bf6285d4f48ff25c875439866d3581219 lib/Teamspeak/Channel.pm
+SHA1 b730b6cdce29258f00805a1ffa0fda6f4fcc5079 lib/Teamspeak/Channel.pod
+SHA1 f37efb2f68b96fb20d13c2eea4cef55161b785a5 lib/Teamspeak/Player.pm
+SHA1 c5dfcb81a3ec2167aef3de99df90fdac0d36ccd3 lib/Teamspeak/Player.pod
+SHA1 c70cba01d68a7353ae38503fe98e2a590a1fa60f lib/Teamspeak/Privileges.pm
+SHA1 44f1f725f142c1ec2b36c37919a1bf47027b1b1a lib/Teamspeak/Privileges.pod
+SHA1 c57e41670bcb582b8128e7c435513399b12e5924 lib/Teamspeak/SQL.pm
+SHA1 7ffa04be818a1f39d052ad30de24be46d8697ac7 lib/Teamspeak/SQL.pod
+SHA1 e9a7a4161386eeeaece4357213856a2ddec32af9 lib/Teamspeak/SQL/Channel.pm
+SHA1 efc235669bbfdbc392250490c8e5f2f6391d2af4 lib/Teamspeak/SQL/Channel.pod
+SHA1 da9eb21273acc42ad25a54e119c6cf99de210635 lib/Teamspeak/Telnet.pm
+SHA1 1f44a8314b41b96f3904e5e93ade3307f104a842 lib/Teamspeak/Telnet.pod
+SHA1 64634276474f8373fe400b3f01e078921d7c1759 lib/Teamspeak/Telnet/Channel.pm
+SHA1 402b39990bb9824e7bb65f4e0f95dffdb0c9ec4f lib/Teamspeak/Telnet/Channel.pod
+SHA1 dc08f1fbb3cbdc53bd293f4b6691bbea824b4d64 lib/Teamspeak/Web.pm
+SHA1 61a6fbc210e3ac303dbe5d55aa2d60502bb57b07 t/00signature.t
+SHA1 d597eefd172d65575c6c2b982ef04869acd28fbe t/01version.t
+SHA1 4d942bb85a8ca266b14961ba8216cd7aeced398f t/09pod.t
+SHA1 118a1f2c4394460dc1e2e769b865f5fb634fcff4 t/10distribution.t
+SHA1 8f3c94e5e41107075e51d5edbdcd1e9778d5388f t/kwalitee.t
+SHA1 3ebdf1808dc1b5a01da591772af244b00fe10516 t/mysql/channel.t
+SHA1 202c33b87dfce0ca7a1e6f19b746d019e39f1cf5 t/mysql/connect.t
+SHA1 e467955b33bae10779094d47feb8fdc82f02bb2c t/sqlite/channel.t
+SHA1 1f07cde3fc621355467573bca6d6a46dbd1049af t/sqlite/server.dbs
+SHA1 8c640890064de3996048f6cc33f77cda64781794 t/telnet/cl_params.t
+SHA1 2951c22c33d7991e6c50326325946b3e5d9c835c t/telnet/connect.t
+SHA1 9045ac14516a6b8675ff0e1e037bbc9bcc4432e1 t/telnet/sl.t
+SHA1 4437db4761eef5003807f8a9b116d54162f13916 t/web/connect.t
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.6 (GNU/Linux)
+
+iD8DBQFH0x3necMYKYVGps4RAgRjAJ47jtkPHgv7ZpQSPyr6yFhynzLdJQCZAdaL
+JoFc43ciPB7l8wXZwFtagmE=
+=FEdZ
+-----END PGP SIGNATURE-----
