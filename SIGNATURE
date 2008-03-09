@@ -19,7 +19,7 @@ SHA1 6ca684af4fef50a7cad03b5921f8aaa4f8245898 LICENSE
 SHA1 c635c28a657a06aabd4e2b83f807df4dce701856 MANIFEST
 SHA1 5afb04c19d4932e42a467618d0627cd2cf3e1b46 Makefile.PL
 SHA1 1ea1a6e7a415d7dc61304e40134acd567cf84971 README
-SHA1 d5faa3097b2449c1307e6f2088eadf95050462ee lib/Teamspeak.pm
+SHA1 f344fecabffc9c050cb3d85c425217140b927583 lib/Teamspeak.pm
 SHA1 b59f0d05ce04afcba4a5dfbc03be12584aa24455 lib/Teamspeak/Ban.pm
 SHA1 1ba3ba3b9ded21c22e4b6cc3aeac1d45459071ec lib/Teamspeak/Ban.pod
 SHA1 fa77a91bf6285d4f48ff25c875439866d3581219 lib/Teamspeak/Channel.pm
@@ -30,17 +30,17 @@ SHA1 c70cba01d68a7353ae38503fe98e2a590a1fa60f lib/Teamspeak/Privileges.pm
 SHA1 44f1f725f142c1ec2b36c37919a1bf47027b1b1a lib/Teamspeak/Privileges.pod
 SHA1 c57e41670bcb582b8128e7c435513399b12e5924 lib/Teamspeak/SQL.pm
 SHA1 7ffa04be818a1f39d052ad30de24be46d8697ac7 lib/Teamspeak/SQL.pod
-SHA1 e9a7a4161386eeeaece4357213856a2ddec32af9 lib/Teamspeak/SQL/Channel.pm
+SHA1 9f24979c678194f0ad106e166b40b2cddfe97b07 lib/Teamspeak/SQL/Channel.pm
 SHA1 efc235669bbfdbc392250490c8e5f2f6391d2af4 lib/Teamspeak/SQL/Channel.pod
 SHA1 da9eb21273acc42ad25a54e119c6cf99de210635 lib/Teamspeak/Telnet.pm
 SHA1 1f44a8314b41b96f3904e5e93ade3307f104a842 lib/Teamspeak/Telnet.pod
-SHA1 6c49513738511c1f39f19ebf9880a7db89cf8b67 lib/Teamspeak/Telnet/Channel.pm
+SHA1 29a12eebb25b4988fb391950c3ffbb291aa70b5d lib/Teamspeak/Telnet/Channel.pm
 SHA1 402b39990bb9824e7bb65f4e0f95dffdb0c9ec4f lib/Teamspeak/Telnet/Channel.pod
-SHA1 a0ab15583f15b7cf9f33cdf3ba3f629c17400a19 lib/Teamspeak/Web.pm
-SHA1 61a6fbc210e3ac303dbe5d55aa2d60502bb57b07 t/00signature.t
+SHA1 d26a6e3e4159377511fed43ea828e2bb4cfce204 lib/Teamspeak/Web.pm
+SHA1 d54c9b6e511dab31aa3961164cae68fcc75fe3a7 t/00signature.t
 SHA1 d597eefd172d65575c6c2b982ef04869acd28fbe t/01version.t
-SHA1 4d942bb85a8ca266b14961ba8216cd7aeced398f t/09pod.t
-SHA1 118a1f2c4394460dc1e2e769b865f5fb634fcff4 t/10distribution.t
+SHA1 bbd1bf9ecb7acdbf72932690ad36d2cfae4721b5 t/09pod.t
+SHA1 a6a116db0b4a6fe11f57af103c661b848125e305 t/10distribution.t
 SHA1 3ebdf1808dc1b5a01da591772af244b00fe10516 t/mysql/channel.t
 SHA1 202c33b87dfce0ca7a1e6f19b746d019e39f1cf5 t/mysql/connect.t
 SHA1 e467955b33bae10779094d47feb8fdc82f02bb2c t/sqlite/channel.t
@@ -52,7 +52,7 @@ SHA1 4437db4761eef5003807f8a9b116d54162f13916 t/web/connect.t
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.6 (GNU/Linux)
 
-iD8DBQFH0zhLecMYKYVGps4RAia1AJwM+1kFubxPoMibwbJPPTaAcS8ayQCeJtLN
-IgE3l1YQtFyV1ugM3ZSHM10=
-=kssB
+iD8DBQFH0zkCecMYKYVGps4RArotAJ4k9EI1OfIEQ0IbXEUEFcv6+y6avACfY4oS
+fvv8GoQ25gQZbxpN2wvDhPU=
+=Hzbi
 -----END PGP SIGNATURE-----
