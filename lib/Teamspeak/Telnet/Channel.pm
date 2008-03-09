@@ -75,6 +75,32 @@ sub topic {
 
 1;
 
-=head A
+__END__
+
+=head1 NAME
+
+Teamspeak::Telnet::Channel - Datastructure for a Teamspeak-Channel.
+
+=head2 parameter()
+
+=head2 new()
+
+=head2 id()
+
+=head2 codec()
+
+=head2 parent()
+
+=head2 order()
+
+=head2 maxusers()
+
+=head2 name()
+
+=head2 flags()
+
+=head2 password()
+
+=head2 topic()
 
 =cut
