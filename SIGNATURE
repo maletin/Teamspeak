@@ -50,9 +50,9 @@ SHA1 adea6cd17bb25527f8a1a21c7054dd2338d10520 t/telnet/connect.t
 SHA1 6ff98d3aca3c6e0f8808a3ad5215a6007057522c t/telnet/sl.t
 SHA1 e8a17d578856ff2b5251c32ef2e064e922a7973c t/web/connect.t
 -----BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.6 (GNU/Linux)
+Version: GnuPG v1.4.9 (GNU/Linux)
 
-iD8DBQFH0z47Bkr2IWzzyAURAvvPAJ0dT/mjd/PzrjbpDN45CInCVLeTygCeJaUv
-eKWI3BuBuewH1w0DqC+Fotk=
-=gpKm
+iEUEARECAAYFAkh/N4kACgkQecMYKYVGps6LNgCYjYZ35fcC9sJSYXRwW7669Cij
+VgCfcMtKQEku18jJPrHen6KedRb311Q=
+=soLB
 -----END PGP SIGNATURE-----
