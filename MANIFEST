@@ -20,6 +20,7 @@ lib/Teamspeak/Web.pm
 LICENSE
 Makefile.PL
 MANIFEST
+META.yml
 README
 SIGNATURE
 t/00signature.t

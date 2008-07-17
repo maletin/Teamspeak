@@ -17,6 +17,7 @@ my %config = (
         'Test::Signature'  => 1.04,
         'Module::Signature' => 0.22,
     },
+    SIGN => 1,
     dist => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
 );
 
