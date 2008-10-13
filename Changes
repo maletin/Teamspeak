@@ -1,6 +1,9 @@
 $Id$
 $URL$
 
+0.7 2008-07-19
+  Using Config::IniFiles and Log::Log4perl now.
+
 0.6 2007-10-22
   tests corrected.
 

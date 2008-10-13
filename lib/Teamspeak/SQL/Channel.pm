@@ -2,7 +2,9 @@
 # $URL$
 
 package Teamspeak::SQL::Channel;
-my @ISA = qw( Teamspeak::Channel );
+
+use strict;
+use base 'Teamspeak::Channel';
 
 my @_parameter = (
     's_channel_description',  'dt_channel_created',
@@ -37,3 +39,7 @@ sub parameter {
     my $self = shift;
     return map { $_ =~ m/.+_channel_(.*)/; $1 } @_parameter;
 }    # Teamspeak::Channel::parameter
+
+1;
+
+__END__

@@ -8,7 +8,7 @@ use strict;
 use DBI;
 use Teamspeak::SQL::Channel;
 use vars qw( $VERSION );
-$VERSION = '0.6';
+$VERSION = '0.7';
 my @ISA = qw( Teamspeak );
 
 sub connect {

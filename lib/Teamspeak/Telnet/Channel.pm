@@ -2,7 +2,9 @@
 # $URL$
 
 package Teamspeak::Telnet::Channel;
-my @ISA = qw( Teamspeak::Channel );
+
+use strict;
+use base 'Teamspeak::Channel';
 
 my @_parameters = (
     'id',    'name',     'topic',    'parent',
@@ -10,7 +12,7 @@ my @_parameters = (
 );
 
 sub parameter {
-    return @_telnet_ch_parameters;
+    return @_parameters;
 }
 
 sub new {

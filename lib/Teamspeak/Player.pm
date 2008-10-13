@@ -5,7 +5,7 @@ package Teamspeak::Player;
 
 use strict;
 use vars qw( $VERSION );
-$VERSION = '0.6';
+$VERSION = '0.7';
 
 sub new {
     my ( $self, %args ) = @_;

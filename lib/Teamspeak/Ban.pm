@@ -5,6 +5,6 @@ package Teamspeak::Ban;
 
 use strict;
 use vars qw( $VERSION );
-$VERSION = '0.6';
+$VERSION = '0.7';
 
 1;

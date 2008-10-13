@@ -8,7 +8,7 @@ use strict;
 use Carp;
 use WWW::Mechanize;
 use vars qw( $VERSION );
-$VERSION = '0.6';
+$VERSION = '0.7';
 
 sub _slogin {
     my ( $self, $login, $password ) = @_;

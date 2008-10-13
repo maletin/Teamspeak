@@ -8,7 +8,7 @@ use strict;
 use Carp;
 use vars qw( $VERSION );
 use Teamspeak::Telnet::Channel;
-$VERSION = '0.6';
+$VERSION = '0.7';
 my @ISA = qw( Teamspeak );
 
 ## Module import.
@@ -22,12 +22,12 @@ sub connect {
     );
     if ( !$t ) {
         $self->my_die("can't create Telnet-Instance");
-        return undef;
+        return;
     }
     $t->open( Host => $self->{host}, Port => $self->{port} )
         or do {
         $self->my_die("Telnet open $t->errmsg");
-        return undef;
+        return;
         };
     $t->waitfor('/\[TS\]$/');
     $self->{sock} = $t;
@@ -72,7 +72,11 @@ sub slogin {
 sub login {
     my ( $self, $login, $pwd ) = @_;
     $self->{sock}->print("login $login $pwd");
-    $self->{sock}->waitfor('/OK$/');
+    my ( $answer, $match ) = $self->{sock}->waitfor('/(OK|ERROR,.*)$/');
+    if ( $match ne 'OK' ) {
+        $self->my_die( 'login failed', $answer );
+        return;
+    }
     $self->{login} = $login;
     return 1;
 }    # login
@@ -83,7 +87,7 @@ sub dbuserlist {
     my @result = ();
     if ( !$self->logged_in ) {
         $self->my_die("command needs login");
-        return undef;
+        return;
     }
     $self->{sock}->print('dbuserlist');
     my ( $answer, $match ) = $self->{sock}->waitfor('/(OK|ERROR,.*)$/');
@@ -114,7 +118,7 @@ sub dbuserid {
     my ( $answer, $match ) = $self->{sock}->waitfor('/(OK|ERROR*)$/');
     if ( !defined $match or $match =~ /ERROR/ ) {
         $self->my_die($match);
-        return undef;
+        return;
     }
     return int($answer);
 }    # dbuserid
@@ -144,7 +148,7 @@ sub cl {
     my ( $answer, $match ) = $self->{sock}->waitfor('/(OK|ERROR.*)$/');
     if ( !defined $match or $match =~ /ERROR/ ) {
         $self->my_die($match);
-        return undef;
+        return;
     }
     my @lines = split( /\n/, $answer );
     shift @lines;    # First Line is empty
@@ -173,7 +177,7 @@ sub pi {
     my ( $answer, $match ) = $self->{sock}->waitfor('/(OK|ERROR.*)$/');
     if ( !defined $match or $match =~ /ERROR/ ) {
         $self->my_die($match);
-        return undef;
+        return;
     }
     my @lines = split( /\n/, $answer );
     shift @lines;    # First Line is empty
@@ -196,7 +200,7 @@ sub pl {
     my ( $answer, $match ) = $self->{sock}->waitfor('/(OK|ERROR.*)$/');
     if ( !defined $match or $match =~ /ERROR/ ) {
         $self->my_die($match);
-        return undef;
+        return;
     }
     my @lines = split( /\n/, $answer );
     shift @lines;    # First Line is empty
@@ -253,7 +257,7 @@ sub fp {
             return @result;
         }
         else {
-            return undef;
+            return;
         }
     }
     else {
@@ -261,7 +265,7 @@ sub fp {
         my ( $answer, $match ) = $self->{sock}->waitfor('/(OK|ERROR.*)$/');
         if ( !defined $match or $match =~ /ERROR/ ) {
             $self->my_die($match);
-            return undef;
+            return;
         }
         my @lines = split( /\n/, $answer );
         shift @lines;    # First Line is empty
@@ -289,7 +293,7 @@ sub banadd {
     my ( $answer, $match ) = $self->{sock}->waitfor('/(OK|ERROR.*)$/');
     if ( !defined $match or $match =~ /ERROR/ ) {
         $self->my_die($match);
-        return undef;
+        return;
     }
     return 1;
 }    # banadd
@@ -303,7 +307,7 @@ sub banplayer {
     my ( $answer, $match ) = $self->{sock}->waitfor('/(OK|ERROR.*)$/');
     if ( !defined $match or $match =~ /ERROR/ ) {
         $self->my_die($match);
-        return undef;
+        return;
     }
     return 1;
 }    # banplayer
@@ -316,7 +320,7 @@ sub kick {
     my ( $answer, $match ) = $self->{sock}->waitfor('/(OK|ERROR.*)$/');
     if ( !defined $match or $match =~ /ERROR/ ) {
         $self->my_die($match);
-        return undef;
+        return;
     }
     return 1;
 }    # kick
@@ -333,7 +337,7 @@ sub serverset {
     my ( $answer, $match ) = $self->{sock}->waitfor('/(OK|ERROR.*)$/');
     if ( !defined $match or $match =~ /ERROR/ ) {
         $self->my_die($match);
-        return undef;
+        return;
     }
     return 1;
 }    # serverset
@@ -347,7 +351,7 @@ sub gapl {
     my ( $answer, $match ) = $self->{sock}->waitfor('/(OK|ERROR.*)$/');
     if ( !defined $match or $match =~ /ERROR/ ) {
         $self->my_die($match);
-        return undef;
+        return;
     }
     $answer =~ /=([\d\.]+)%/;
     return $1;
@@ -362,7 +366,7 @@ sub mptc {
     my ( $answer, $match ) = $self->{sock}->waitfor('/(OK|ERROR.*)$/');
     if ( !defined $match or $match =~ /ERROR/ ) {
         $self->my_die($match);
-        return undef;
+        return;
     }
     return 1;
 }    # mptc
@@ -375,7 +379,7 @@ sub removeclient {
     my ( $answer, $match ) = $self->{sock}->waitfor('/(OK|ERROR.*)$/');
     if ( !defined $match or $match =~ /ERROR/ ) {
         $self->my_die($match);
-        return undef;
+        return;
     }
     return 1;
 }    # removeclient
@@ -388,7 +392,7 @@ sub msg {
     my ( $answer, $match ) = $self->{sock}->waitfor('/(OK|ERROR.*)$/');
     if ( !defined $match or $match =~ /ERROR/ ) {
         $self->my_die($match);
-        return undef;
+        return;
     }
     return 1;
 }    # msg
@@ -402,7 +406,7 @@ sub msgu {
     my ( $answer, $match ) = $self->{sock}->waitfor('/(OK|ERROR.*)$/');
     if ( !defined $match or $match =~ /ERROR/ ) {
         $self->my_die($match);
-        return undef;
+        return;
     }
     return 1;
 }    # msgu
@@ -434,7 +438,7 @@ sub channels {
         return keys( %{ $_[0]->{channel} } );
     }
     else {
-        return undef;
+        return;
     }
 }    # channels
 

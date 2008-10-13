@@ -2,16 +2,18 @@
 # $URL$
 
 package Teamspeak;
-use Teamspeak::Channel;
-use Teamspeak::Player;
-
 use 5.004;
 use strict;
+use warnings;
 use Net::Telnet;
 use Carp;
 use vars qw( $VERSION );
 
-$VERSION = '0.6';
+use Teamspeak::Channel;
+use Teamspeak::Player;
+
+$VERSION = '0.7';
+
 
 sub new {
     my ( $class, %arg ) = @_;
@@ -54,12 +56,12 @@ Teamspeak - Interface to administrate Teamspeak-Server.
 
 =head1 VERSION
 
-This document refers to version 0.6 of Teamspeak.
+This document refers to version 0.7 of Teamspeak.
 
 =head1 SYNOPSIS
 
  use Teamspeak;
- my $tsh = Teamspeak->new( 
+ my $tsh = Teamspeak->new(
      timeout => <sec>,
      port => <port_number>,
      host => <ip_or_hostname>
